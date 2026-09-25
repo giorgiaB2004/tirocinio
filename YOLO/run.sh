@@ -9,21 +9,16 @@
 #SBATCH --time=24:00:00                
 #SBATCH --output=log_%j.log     
 
-# 1. PULIZIA E CARICAMENTO MODULI
 module purge
 module load cuda 
 
-# 2. STRATEGIA PER LO STUB ERROR E OTTIMIZZAZIONI ULTRALYTICS
 unset FORCE_CUDA
 export CUDA_CACHE_DISABLE=0
-export ULTRALYTICS_CONFIG_DIR="" # Evita conflitti di permessi nella home per Ultralytics
+export ULTRALYTICS_CONFIG_DIR="" 
 
-# 3. ATTIVAZIONE CONDA SICURA
 source /home/giorgiabartoli/miniconda3/etc/profile.d/conda.sh
-conda activate yolo #(da creare l'ambiente per yolo)
+conda activate yolo 
 
-# 4. SPOSTATI NELLA CARTELLA DEL PROGETTO YOLO
-# Sostituisci con il percorso reale dove tieni i file .py e .yaml di YOLO26
 cd /data/giorgiabartoli/YOLO
 PASSO=256
 GRUOUNDTRUTHIN="/data/giorgiabartoli/YOLO/groundTruth"
@@ -40,9 +35,6 @@ echo "=== fine creazione dataset ==="
 echo "=== VERIFICA GPU INIZIALE ==="
 python -c "import torch; print('CUDA Disponibile nel job:', torch.cuda.is_available()); print('Dispositivo:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'Nessuno')"
 
-# ==========================================
-# ESECUZIONE FLUSSO YOLO26
-# ==========================================
 echo "=== INIZIO PIPELINE YOLO26: $(date) ==="
 
 #echo "=== FASE 1: INIZIO PRE-ADDESTRAMENTO (PhenoBench) ==="

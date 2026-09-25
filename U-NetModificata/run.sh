@@ -9,30 +9,22 @@
 #SBATCH --time=24:00:00                
 #SBATCH --output=log_%j.log     
 
-# 1. PULIZIA E CARICAMENTO MODULI
 module purge
 module load cuda 
 
-# 2. STRATEGIA PER LO STUB ERROR
 unset FORCE_CUDA
 export CUDA_CACHE_DISABLE=0
 
-# 3. ATTIVAZIONE CONDA SICURA
 source /home/giorgiabartoli/miniconda3/etc/profile.d/conda.sh
 conda activate unet_env
 
-# 4. SPOSTATI NELLA CARTELLA DEL PROGETTO
 cd /data/giorgiabartoli/modificheUNET
 
-# ==============================================================================
-# CONFIGURAZIONE DEI PERCORSI (DIRECTORY PRINCIPALI)
-# ==============================================================================
 DATASET_PATH="/data/giorgiabartoli/modificheUNET/maisweed128"
 CHECKPOINT_DIR="passo128/files"
 RESULTS_DIR="passo128/results"
 LOGS_DIR="passo128/logs_esperimenti"
 
-# Crea le cartelle principali se non esistono
 mkdir -p "$LOGS_DIR"
 mkdir -p "$CHECKPOINT_DIR"
 mkdir -p "$RESULTS_DIR"
@@ -40,27 +32,24 @@ mkdir -p "$RESULTS_DIR"
 echo "=== VERIFICA GPU INIZIALE ==="
 python -c "import torch; print('CUDA Disponibile nel job:', torch.cuda.is_available())"
 
-SEED=43
+SEED=42
 EPOCHS=150
 LR="8e-4"
 
-FOURTH_CHANNEL="green_chromaticity"  # "exg" o "green_chromaticity"
-LAMBDA_REG="1e-3"     # Forza della regolarizzazione SIGReg (0 per disattivare o 1e-3)
+FOURTH_CHANNEL="green_chromaticity"  
+LAMBDA_REG="1e-3"     
 
 echo "=== FINESTRA DI ESPERIMENTI INIZIATA: $(date) ==="
 echo "Configurazione Globale: Canale4=$FOURTH_CHANNEL | LambdaReg=$LAMBDA_REG | Epochs=$EPOCHS"
 
-# Definizione delle liste dei parametri (4 x 2 x 2 = 16 combinazioni)
 ATTENTIONS=("none" "class_aware" "dual" "both")
 DROPOUTS=("0.0" "0.3")
 ASPP_OPTIONS=("noaspp" "aspp")
 
-# Cicli annidati per lanciare le 16 combinazioni sequenzialmente
 for att in "${ATTENTIONS[@]}"; do
     for drop in "${DROPOUTS[@]}"; do
         for aspp in "${ASPP_OPTIONS[@]}"; do
             
-            # 1. Costruiamo il flag per l'ASPP da passare a Python
             ASPP_FLAG=""
             if [ "$aspp" == "aspp" ]; then
                 ASPP_FLAG="--use_aspp"

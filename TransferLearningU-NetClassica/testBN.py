@@ -187,7 +187,7 @@ if __name__ == "__main__":
     image_w = 256
     image_h = 256
     size = (image_w, image_h)
-    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/dataset" #da modificare
+    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/dataset" 
     colormap = [
         [0, 0, 0],      # Background -> Nero
         [0, 128, 0],    # Mais -> Verde

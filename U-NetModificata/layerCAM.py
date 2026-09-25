@@ -69,7 +69,6 @@ if "green_chromaticity" in ckpt_str or "gc" in ckpt_str:
 else:
     EXTRA_CHANNEL_TYPE = "exg"
 
-print(f"Indice vegetazionale rilevato per il 4° canale: {EXTRA_CHANNEL_TYPE}")
 
 checkpoint = torch.load(CHECKPOINT_PATH, map_location=DEVICE, weights_only=False)
 model_config = checkpoint["config"]["model"]
@@ -92,7 +91,6 @@ transform = transforms.ToTensor()
 image_extensions = (".jpg", ".jpeg", ".png", ".bmp", ".tif")
 image_paths = [p for p in Path(TEST_DIR).glob("*") if p.suffix.lower() in image_extensions]
 
-print(f"Trovate {len(image_paths)} immagini da elaborare.\n")
 
 for idx, img_path in enumerate(image_paths):
     raw_img = Image.open(img_path).convert("RGB")
@@ -138,4 +136,4 @@ for idx, img_path in enumerate(image_paths):
 
 cam_extractor.remove_hooks()
 
-print(f"\nElaborazione completata con successo! Heatmap salvate in: {OUTPUT_DIR}")
+print(f"\nElaborazione completata! Heatmap salvate in: {OUTPUT_DIR}")

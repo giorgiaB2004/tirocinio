@@ -1,8 +1,7 @@
 from ultralytics import YOLO
 
 
-model = YOLO("runs/semantic/train/weights/best.pt") #DA VEDERE DOVE SALVA
-
+model = YOLO("runs/semantic/train/weights/best.pt")
 
 results = model.predict(
     source="/data/giorgiabartoli/YOLO/maisweed/images/test",   

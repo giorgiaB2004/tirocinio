@@ -9,47 +9,38 @@
 #SBATCH --time=24:00:00                
 #SBATCH --output=log_%j.log     
 
-# 1. PULIZIA E CARICAMENTO MODULI
 module purge
 module load cuda 
 
-# 2. STRATEGIA PER LO STUB ERROR
 unset FORCE_CUDA
 export CUDA_CACHE_DISABLE=0
 
-# 3. ATTIVAZIONE CONDA SICURA
 source /home/giorgiabartoli/miniconda3/etc/profile.d/conda.sh
 conda activate unet_env
 
-# 4. SPOSTATI NELLA CARTELLA DEL PROGETTO
 cd /data/giorgiabartoli/modificheUNET
 
-# Crea una cartella dedicata ai log degli esperimenti (se non esiste)
 mkdir -p logs_esperimenti
 
 echo "=== VERIFICA GPU INIZIALE ==="
 python -c "import torch; print('CUDA Disponibile nel job:', torch.cuda.is_available())"
 
-SEED=43
+SEED=42
 echo "=== FINESTRA DI ESPERIMENTI INIZIATA: $(date) ==="
 
-# Definizione delle liste dei parametri (4 x 2 x 2 = 16 combinazioni)
 ATTENTIONS=("none" "class_aware" "dual" "both")
 DROPOUTS=("0.0" "0.3")
 ASPP_OPTIONS=("noaspp" "aspp")
 
-# Cicli annidati per lanciare le 16 combinazioni sequenzialmente
 for att in "${ATTENTIONS[@]}"; do
     for drop in "${DROPOUTS[@]}"; do
         for aspp in "${ASPP_OPTIONS[@]}"; do
             
-            # Costruiamo il flag per l'ASPP da passare a Python
             ASPP_FLAG=""
             if [ "$aspp" == "aspp" ]; then
                 ASPP_FLAG="--use_aspp"
             fi
             
-            # Definiamo un nome univoco per il log di questa specifica combinazione
             LOG_FILE="logs_esperimenti/log_${att}_${aspp}_drop${drop}.log"
             
             echo "--------------------------------------------------------" | tee -a "$LOG_FILE"

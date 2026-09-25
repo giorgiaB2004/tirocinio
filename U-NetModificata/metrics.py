@@ -157,36 +157,3 @@ class CombinedSegmentationLoss(nn.Module):
         loss_reg = self.reg_loss_fn(bottleneck)
         return loss_seg + (self.lambda_reg * loss_reg)
 
-
-"""
-class DiceLoss(nn.Module):
-    def __init__(self, num_classes, smooth=1e-5, ignore_index=None, weight=None):
-        super(DiceLoss, self).__init__()
-        self.num_classes = num_classes
-        self.smooth = smooth
-        self.ignore_index = ignore_index
-        self.weight = weight # <-- IMPORTANTE: Salva il peso nell'oggetto!
-
-    def forward(self, logits, targets):
-        
-        #logits: [B, C, H, W] 
-        #targets: [B, H, W] 
-        
-        probs = F.softmax(logits, dim=1)  
-        targets_one_hot = F.one_hot(targets, num_classes=self.num_classes).permute(0, 3, 1, 2).float()
-
-        if self.ignore_index is not None:
-            mask = (targets != self.ignore_index).unsqueeze(1)  
-            probs = probs * mask
-            targets_one_hot = targets_one_hot * mask
-
-        intersection = torch.sum(probs * targets_one_hot, dim=(0, 2, 3))
-        union = torch.sum(probs + targets_one_hot, dim=(0, 2, 3))
-
-        dice = (2 * intersection + self.smooth) / (union + self.smooth)
-        if self.weight is not None:
-            w = self.weight.to(logits.device)
-            return 1.0 - ((dice * w).sum() / w.sum())
-        else:
-            return 1.0 - dice.mean()
-"""

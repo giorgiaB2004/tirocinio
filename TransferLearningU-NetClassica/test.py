@@ -136,14 +136,14 @@ if __name__ == "__main__":
     image_w = 256
     image_h = 256
     size = (image_w, image_h)
-    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/maisweed" #da modificare
+    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/maisweed" 
     colormap = [
         [0, 0, 0],      # Background
         [0, 128, 0],    # Mais
         [0, 0, 128]     # Erbacce
     ]
     num_classes = len(colormap)
-    classes = ["background", "mais", "erbacce"] #da modificare
+    classes = ["background", "mais", "erbacce"] 
 
     """ Load the checkpoint """
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

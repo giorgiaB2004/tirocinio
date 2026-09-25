@@ -7,21 +7,17 @@
 #SBATCH --gres=gpu:1                   
 #SBATCH --mem=32G                      
 #SBATCH --time=24:00:00                
-#SBATCH --output=log_%j.log     # <-- Unico log principale di Slurm (%j mette il Job ID)
+#SBATCH --output=log_%j.log     
 
-# 1. PULIZIA E CARICAMENTO MODULI
 module purge
 module load cuda 
 
-# 2. STRATEGIA PER LO STUB ERROR
 unset FORCE_CUDA
 export CUDA_CACHE_DISABLE=0
 
-# 3. ATTIVAZIONE CONDA SICURA
 source /home/giorgiabartoli/miniconda3/etc/profile.d/conda.sh
 conda activate unet_env
 
-# 4. SPOSTATI NELLA CARTELLA DEL PROGETTO
 cd /data/giorgiabartoli/phenoBenchUnet/transferlearning
 
 : <<'COMMENTO'
@@ -49,9 +45,9 @@ python -c "import torch; print('CUDA Disponibile nel job:', torch.cuda.is_availa
 
 echo "=== INIZIO: $(date) ==="
 
-#python trainBN.py  --dataset_path "/data/giorgiabartoli/phenoBenchUnet/dataset" --results_dir "resultsPreAdd" --attention_type "none" --dropout_rate 0.0 --run_name phenobench_pretrain --amp
+python trainBN.py  --dataset_path "/data/giorgiabartoli/phenoBenchUnet/dataset" --results_dir "resultsPreAdd" --attention_type "none" --dropout_rate 0.0 --run_name phenobench_pretrain --amp
 
-#python trainCongelamento.py --dataset_path /data/giorgiabartoli/phenoBenchUnet/maisweed --pretrained_path /data/giorgiabartoli/phenoBenchUnet/transferlearning/pretrained_files/pretrained_phenobench_pretrain.pth --run_name phenobench_congelamento_run --attention_type "class_aware" --dropout_rate 0.3 --use_aspp --checkpoint_dir "/data/giorgiabartoli/phenoBenchUnet/transferlearning/files"
+python trainCongelamento.py --dataset_path /data/giorgiabartoli/phenoBenchUnet/maisweed --pretrained_path /data/giorgiabartoli/phenoBenchUnet/transferlearning/pretrained_files/pretrained_phenobench_pretrain.pth --run_name phenobench_congelamento_run --attention_type "class_aware" --dropout_rate 0.3 --use_aspp --checkpoint_dir "/data/giorgiabartoli/phenoBenchUnet/transferlearning/files"
 
 python test.py --checkpoint "/data/giorgiabartoli/phenoBenchUnet/transferlearning/files/checkpoint_phenobench_congelamento_run.pth" --dataset_path "/data/giorgiabartoli/phenoBenchUnet/maisweed" --save_dir "/data/giorgiabartoli/phenoBenchUnet/transferlearning/tetsResults" --fourth_channel "exg" --attention_type "class_aware" --dropout_rate 0.3 --use_aspp --amp --save_joint
 

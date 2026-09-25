@@ -371,14 +371,10 @@ class SafePhenoDataset(SegmentationDataset):
     def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
         image, target = super().__getitem__(idx)
         
-        # Se sul disco ci sono ancora residui dei codici istanza di PhenoBench
-        # o se il cast ha creato pixel > 2, ripuliamo tutto al volo in RAM
         if target.max() > 2:
-            # Se sono i valori originari a 16 bit non ancora filtrati
+            
             target = target % 1000
         
-        # Qualsiasi valore che NON sia 0, 1 o 2 viene convertito in IGNORE_INDEX (255)
-        # In questo modo PyTorch lo ignorerà completamente e la GPU non crasherà mai!
         safe_target = torch.where(
             (target >= 0) & (target <= 2),
             target,

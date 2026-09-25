@@ -158,11 +158,11 @@ if __name__ == "__main__":
     lr = 3e-4 
     early_stopping_patience = 50
     checkpoint_path = f"{path}/checkpoint.pth"
-    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/dataset" #da modificare
+    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/dataset" 
     
     num_classes = 3
 
-    """ Dataset """
+    """ taset """
     (train_x, train_y), (valid_x, valid_y), (test_x, test_y) = load_data(dataset_path)
     print(f"Dataset Size: Train: {len(train_x)} - Valid: {len(valid_x)} - Test: {len(test_x)}")
 

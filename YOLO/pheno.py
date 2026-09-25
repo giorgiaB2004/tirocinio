@@ -2,13 +2,11 @@ import os
 import shutil
 import cv2
 
-# Sorgenti PhenoBench
 inputTrainImg = "/data/giorgiabartoli/phenoBench/PhenoBench/train/images"
 inputTrainMasks = "/data/giorgiabartoli/phenoBench/PhenoBench/train/semantics"
 inputValImg = "/data/giorgiabartoli/phenoBench/PhenoBench/val/images"
 inputValMasks = "/data/giorgiabartoli/phenoBench/PhenoBench/val/semantics"
 
-# Destinazioni YOLO
 outputTrainImages = "/data/giorgiabartoli/YOLO/phenobench/images/train"
 outputTrainMasks = "/data/giorgiabartoli/YOLO/phenobench/masks/train"
 outputValImages = "/data/giorgiabartoli/YOLO/phenobench/images/val"
@@ -32,8 +30,7 @@ def converti_maschere(inputDir, outputDir):
             continue
 
         path = os.path.join(inputDir, nomeFile)
-        mask = cv2.imread(path, cv2.IMREAD_UNCHANGED)  # PhenoBench salva le maschere come PNG uint16
-
+        mask = cv2.imread(path, cv2.IMREAD_UNCHANGED)  
         if mask is None:
             print(f"Attenzione: impossibile leggere {nomeFile}")
             continue

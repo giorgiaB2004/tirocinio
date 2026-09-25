@@ -7,7 +7,6 @@
 #SBATCH --gres=gpu:1                   
 #SBATCH --mem=32G                      
 #SBATCH --time=24:00:00                
-# Unico log principale di Slurm (%j mette il Job ID)
 #SBATCH --output=log_%j.log     
 
 module purge

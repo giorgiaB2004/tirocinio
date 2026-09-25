@@ -155,8 +155,8 @@ if __name__ == "__main__":
     lr = 3e-4
     early_stopping_patience = 10
     checkpoint_path = f"{path}/checkpoint.pth"
-    dataset_path = "/data/giorgiabartoli/unet/maisweed" #da modificare
-    colormap = [ #da modificare
+    dataset_path = "/data/giorgiabartoli/unet/maisweed" 
+    colormap = [ 
         [0, 0, 0],      # Background
         [0, 128, 0],    # Mais
         [0, 0, 128]     # Erbacce
@@ -180,7 +180,7 @@ if __name__ == "__main__":
         A.RandomBrightnessContrast(p=0.2),
         A.GaussianBlur(p=0.2),
         A.CoarseDropout(p=0.2, max_holes=8, max_height=24, max_width=24),
-    ], is_check_shapes=False) #forse da aggiungere dopo false , seed=seed
+    ], is_check_shapes=False) 
 
     """ Dataset and loader """
     train_dataset = DATASET(train_x, train_y, size, colormap, transform=transform)
@@ -192,8 +192,8 @@ if __name__ == "__main__":
         shuffle=True,
         num_workers=4,
         pin_memory=True,
-        worker_init_fn=seed_worker,  #aggiunto per riproducibilià
-        generator=g                  #aggiunto per riproducibilià
+        worker_init_fn=seed_worker,  
+        generator=g                  
     )
 
     valid_loader = DataLoader(
@@ -202,8 +202,8 @@ if __name__ == "__main__":
         shuffle=False,
         num_workers=4,
         pin_memory=True,
-        worker_init_fn=seed_worker,  #aggiunto per riproducibilià
-        generator=g                  #aggiunto per riproducibilià
+        worker_init_fn=seed_worker,  
+        generator=g                  
     )
 
     """ Model """

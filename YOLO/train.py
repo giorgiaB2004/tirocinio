@@ -14,8 +14,7 @@ results = model.train(
 
 """
 
-FINE TUNING
-
+FINE TUNING dopo phenobench
 model = YOLO("runs/semantic/train/weights/best.pt")
 
 results = model.train(

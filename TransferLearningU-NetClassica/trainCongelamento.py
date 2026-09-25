@@ -115,15 +115,15 @@ def evaluate(model, loader, loss_fn, device):
         epoch_loss = epoch_loss/len(loader)
         return epoch_loss
     
-#aggiunto per riproducibilià
+
 def seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
 if __name__ == "__main__":
-    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8" #aggiunto per riproducibilià
-    torch.use_deterministic_algorithms(True, warn_only=True) #aggiunto per riproducibilià
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8" 
+    torch.use_deterministic_algorithms(True, warn_only=True) 
 
     parser = argparse.ArgumentParser(description="Training script per segmentazione")
     parser.add_argument("--seed", type=int, default=42, help="seed")
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     seeding(seed)
 
 
-    #aggiunto per riproducibilià
+    
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     g = torch.Generator()
@@ -156,8 +156,8 @@ if __name__ == "__main__":
     early_stopping_patience = 10
     #checkpoint_path = f"{path}/checkpoint.pth"
     checkpoint_path = "/data/giorgiabartoli/phenoBenchUnet/Multiclass-Segmentation-in-PyTorch-main/files/checkpoint_preaddestramento.pth" #aggiunto per vedere se prende il checkpoint
-    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/maisweed" #da modificare
-    colormap = [ #da modificare
+    dataset_path = "/data/giorgiabartoli/phenoBenchUnet/maisweed" 
+    colormap = [ 
         [0, 0, 0],      # Background
         [0, 128, 0],    # Mais
         [0, 0, 128]     # Erbacce
@@ -181,7 +181,7 @@ if __name__ == "__main__":
         A.RandomBrightnessContrast(p=0.2),
         A.GaussianBlur(p=0.2),
         A.CoarseDropout(p=0.2, max_holes=8, max_height=24, max_width=24),
-    ], is_check_shapes=False) #forse da aggiungere dopo false , seed=seed
+    ], is_check_shapes=False) 
 
     """ Dataset and loader """
     train_dataset = DATASET(train_x, train_y, size, colormap, transform=transform)
@@ -193,8 +193,8 @@ if __name__ == "__main__":
         shuffle=True,
         num_workers=4,
         pin_memory=True,
-        worker_init_fn=seed_worker,  #aggiunto per riproducibilià
-        generator=g                  #aggiunto per riproducibilià
+        worker_init_fn=seed_worker,  
+        generator=g                  
     )
 
     valid_loader = DataLoader(
@@ -203,8 +203,8 @@ if __name__ == "__main__":
         shuffle=False,
         num_workers=4,
         pin_memory=True,
-        worker_init_fn=seed_worker,  #aggiunto per riproducibilià
-        generator=g                  #aggiunto per riproducibilià
+        worker_init_fn=seed_worker,  
+        generator=g                  
     )
 
     """ Model """
@@ -303,13 +303,10 @@ if __name__ == "__main__":
             print("Early stopping triggered in Fase 2. Training concluso.")
             break
 
-    # === REGISTRATORE GRAFICO (STILE NUOVO) ===
     plt.figure(figsize=(8, 5))
 
-    # Creiamo l'asse X per le epoche (da 1 fino alla lunghezza delle loss accumulate)
     epochs_range = range(1, len(trainLoss) + 1)
 
-    # Train loss in BLU
     plt.plot(
         epochs_range,
         trainLoss,
@@ -317,7 +314,7 @@ if __name__ == "__main__":
         color="blue",
         linewidth=2,
     )
-    # Validation loss in ROSSO
+
     plt.plot(
         epochs_range,
         valLoss,
@@ -333,6 +330,5 @@ if __name__ == "__main__":
     plt.legend(loc="upper right")
     plt.tight_layout()
 
-    # Salvataggio semplice nella cartella corrente
     plt.savefig("grafico.png", dpi=300, bbox_inches="tight")
     plt.close()
