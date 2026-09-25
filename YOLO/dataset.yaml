@@ -1,0 +1,11 @@
+path: /data/giorgiabartoli/YOLO/maisweed
+
+train: images/train
+val: images/val
+test: images/test
+masks_dir: masks
+
+names:
+  0: Background
+  1: Mais
+  2: Weeds

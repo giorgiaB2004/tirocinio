@@ -1,0 +1,78 @@
+#!/bin/bash
+#SBATCH --job-name=weed_segmentation    
+#SBATCH --partition=long               
+#SBATCH --nodes=1                      
+#SBATCH --ntasks=1                     
+#SBATCH --cpus-per-task=4              
+#SBATCH --gres=gpu:1                   
+#SBATCH --mem=32G                      
+#SBATCH --time=24:00:00                
+#SBATCH --output=log_%j.log     
+
+# 1. PULIZIA E CARICAMENTO MODULI
+module purge
+module load cuda 
+
+# 2. STRATEGIA PER LO STUB ERROR
+unset FORCE_CUDA
+export CUDA_CACHE_DISABLE=0
+
+# 3. ATTIVAZIONE CONDA SICURA
+source /home/giorgiabartoli/miniconda3/etc/profile.d/conda.sh
+conda activate unet_env
+
+# 4. SPOSTATI NELLA CARTELLA DEL PROGETTO
+cd /data/giorgiabartoli/modificheUNET
+
+# Crea una cartella dedicata ai log degli esperimenti (se non esiste)
+mkdir -p logs_esperimenti
+
+echo "=== VERIFICA GPU INIZIALE ==="
+python -c "import torch; print('CUDA Disponibile nel job:', torch.cuda.is_available())"
+
+SEED=43
+echo "=== FINESTRA DI ESPERIMENTI INIZIATA: $(date) ==="
+
+# Definizione delle liste dei parametri (4 x 2 x 2 = 16 combinazioni)
+ATTENTIONS=("none" "class_aware" "dual" "both")
+DROPOUTS=("0.0" "0.3")
+ASPP_OPTIONS=("noaspp" "aspp")
+
+# Cicli annidati per lanciare le 16 combinazioni sequenzialmente
+for att in "${ATTENTIONS[@]}"; do
+    for drop in "${DROPOUTS[@]}"; do
+        for aspp in "${ASPP_OPTIONS[@]}"; do
+            
+            # Costruiamo il flag per l'ASPP da passare a Python
+            ASPP_FLAG=""
+            if [ "$aspp" == "aspp" ]; then
+                ASPP_FLAG="--use_aspp"
+            fi
+            
+            # Definiamo un nome univoco per il log di questa specifica combinazione
+            LOG_FILE="logs_esperimenti/log_${att}_${aspp}_drop${drop}.log"
+            
+            echo "--------------------------------------------------------" | tee -a "$LOG_FILE"
+            echo "CONFIGURAZIONE CORRENTE:" | tee -a "$LOG_FILE"
+            echo "Attenzione: $att | Dropout: $drop | ASPP: $aspp" | tee -a "$LOG_FILE"
+            echo "--------------------------------------------------------" | tee -a "$LOG_FILE"
+            
+            echo "=== INIZIO ADDESTRAMENTO: $(date) ===" | tee -a "$LOG_FILE"
+            
+            # Esegue train.py salvando l'output sia nel log specifico che nel log principale di Slurm (grazie a tee -a)
+            python train.py --seed $SEED --attention_type "$att" --dropout_rate "$drop" --lambda_reg 0 $ASPP_FLAG 2>&1 | tee -a "$LOG_FILE"
+            
+            echo "=== FINE ADDESTRAMENTO ===" | tee -a "$LOG_FILE"
+            echo "=== INIZIO TEST ===" | tee -a "$LOG_FILE"
+            
+            # Esegue test.py facendo la stessa cosa
+            python test.py --seed $SEED --attention_type "$att" --dropout_rate "$drop" --lambda_reg 0 $ASPP_FLAG 2>&1 | tee -a "$LOG_FILE"
+            
+            echo "=== FINE TEST: $(date) ===" | tee -a "$LOG_FILE"
+            echo "" | tee -a "$LOG_FILE"
+            
+        done
+    done
+done
+
+echo "=== FINE DI TUTTE LE 16 COMBINAZIONI: $(date) ==="

@@ -1,0 +1,49 @@
+ERROR: Unable to locate a modulefile for 'cuda'
+=== VERIFICA GPU INIZIALE ===
+CUDA Disponibile nel job: True
+=== INIZIO: Thu Jul 16 11:09:38 CEST 2026 ===
+/home/giorgiabartoli/miniconda3/envs/unet_env/lib/python3.10/site-packages/albumentations/__init__.py:24: UserWarning: A new version of Albumentations is available: 2.0.8 (you have 1.4.24). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+PhenoBench - Train: 22512, Validation: 12352
+Inizio pre-addestramento su PhenoBench (100 epoche)...
+/home/giorgiabartoli/miniconda3/envs/unet_env/lib/python3.10/site-packages/torch/nn/functional.py:3053: UserWarning: nll_loss2d_forward_out_cuda_template does not have a deterministic implementation, but you set 'torch.use_deterministic_algorithms(True, warn_only=True)'. You can file an issue at https://github.com/pytorch/pytorch/issues to help us prioritize adding deterministic support for this operation. (Triggered internally at ../aten/src/ATen/Context.cpp:71.)
+  return torch._C._nn.cross_entropy_loss(input, target, weight, _Reduction.get_enum(reduction), ignore_index, label_smoothing)
+Epoch 001 | Train: 1.0411 | Val: 0.8868 | mIoU: 0.6378 | Tempo: 149.8s
+Epoch 002 | Train: 0.7359 | Val: 0.7020 | mIoU: 0.7590 | Tempo: 148.6s
+Epoch 003 | Train: 0.5802 | Val: 0.5830 | mIoU: 0.7593 | Tempo: 148.6s
+Epoch 004 | Train: 0.4727 | Val: 0.4920 | mIoU: 0.7851 | Tempo: 148.3s
+Epoch 005 | Train: 0.3853 | Val: 0.4187 | mIoU: 0.7873 | Tempo: 148.7s
+Epoch 006 | Train: 0.3098 | Val: 0.3609 | mIoU: 0.7950 | Tempo: 148.6s
+Epoch 007 | Train: 0.2379 | Val: 0.3020 | mIoU: 0.7934 | Tempo: 148.4s
+Epoch 008 | Train: 0.1805 | Val: 0.2641 | mIoU: 0.8082 | Tempo: 148.6s
+Epoch 009 | Train: 0.1386 | Val: 0.2376 | mIoU: 0.8031 | Tempo: 148.7s
+Epoch 010 | Train: 0.1126 | Val: 0.2107 | mIoU: 0.8132 | Tempo: 148.7s
+Epoch 011 | Train: 0.0958 | Val: 0.2087 | mIoU: 0.8059 | Tempo: 148.7s
+Epoch 012 | Train: 0.0827 | Val: 0.1957 | mIoU: 0.8073 | Tempo: 148.1s
+Epoch 013 | Train: 0.0823 | Val: 0.1850 | mIoU: 0.8115 | Tempo: 148.8s
+Epoch 014 | Train: 0.0734 | Val: 0.1839 | mIoU: 0.8111 | Tempo: 148.4s
+Epoch 015 | Train: 0.0699 | Val: 0.1839 | mIoU: 0.8092 | Tempo: 148.1s
+Epoch 016 | Train: 0.0702 | Val: 0.1864 | mIoU: 0.8012 | Tempo: 147.9s
+Epoch 017 | Train: 0.0690 | Val: 0.1736 | mIoU: 0.8167 | Tempo: 148.5s
+Epoch 018 | Train: 0.0601 | Val: 0.1743 | mIoU: 0.8141 | Tempo: 148.2s
+Epoch 019 | Train: 0.0593 | Val: 0.1790 | mIoU: 0.8129 | Tempo: 148.0s
+Epoch 020 | Train: 0.0596 | Val: 0.1830 | mIoU: 0.8098 | Tempo: 148.0s
+Epoch 021 | Train: 0.0569 | Val: 0.1761 | mIoU: 0.8132 | Tempo: 147.8s
+Epoch 022 | Train: 0.0559 | Val: 0.1821 | mIoU: 0.7953 | Tempo: 147.9s
+Epoch 023 | Train: 0.0533 | Val: 0.1753 | mIoU: 0.8155 | Tempo: 147.9s
+Epoch 024 | Train: 0.0484 | Val: 0.1743 | mIoU: 0.8151 | Tempo: 147.8s
+Epoch 025 | Train: 0.0466 | Val: 0.1741 | mIoU: 0.8155 | Tempo: 148.3s
+Epoch 026 | Train: 0.0459 | Val: 0.1732 | mIoU: 0.8149 | Tempo: 148.4s
+Epoch 027 | Train: 0.0449 | Val: 0.1733 | mIoU: 0.8156 | Tempo: 148.4s
+Epoch 028 | Train: 0.0444 | Val: 0.1741 | mIoU: 0.8146 | Tempo: 148.1s
+Epoch 029 | Train: 0.0434 | Val: 0.1747 | mIoU: 0.8147 | Tempo: 147.9s
+Epoch 030 | Train: 0.0424 | Val: 0.1740 | mIoU: 0.8161 | Tempo: 148.2s
+Epoch 031 | Train: 0.0421 | Val: 0.1750 | mIoU: 0.8142 | Tempo: 148.3s
+Epoch 032 | Train: 0.0413 | Val: 0.1761 | mIoU: 0.8126 | Tempo: 148.1s
+Epoch 033 | Train: 0.0415 | Val: 0.1752 | mIoU: 0.8135 | Tempo: 148.1s
+Epoch 034 | Train: 0.0418 | Val: 0.1743 | mIoU: 0.8137 | Tempo: 148.0s
+Epoch 035 | Train: 0.0409 | Val: 0.1750 | mIoU: 0.8141 | Tempo: 148.1s
+Epoch 036 | Train: 0.0402 | Val: 0.1735 | mIoU: 0.8153 | Tempo: 148.2s
+Early stopping nel pre-addestramento.
+Pre-addestramento completato! Modello migliore salvato in: pretrained_files/pretrained_phenobench_pretrain.pth
+=== FINE: Thu Jul 16 12:38:47 CEST 2026 ===

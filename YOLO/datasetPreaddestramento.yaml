@@ -1,0 +1,10 @@
+path: /data/giorgiabartoli/YOLO/phenobench
+
+train: images/train
+val: images/val
+masks_dir: masks
+
+names:
+  0: Background
+  1: Mais
+  2: Weeds
