@@ -56,9 +56,6 @@ def get_destinazione(nomeFile, isMask=False):
     return None 
 
 
-
-
-
 for nomeFile in os.listdir(inputImg):
     if nomeFile.endswith(".png"):
         dest = get_destinazione(nomeFile, isMask=False)

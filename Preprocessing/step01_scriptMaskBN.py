@@ -35,12 +35,9 @@ for prefisso, listaFile in gruppiPref.items():
     
     for percorso in listaFile[1:]:
         img = cv2.imread(percorso, 0)
-        #maschera = cv2.bitwise_or(maschera , img )
-        #maschera = (maschera > 0) | (img > 0)
         maschera = ((maschera > 0) | (img > 0)).astype(np.uint8)
 
     maschere[prefisso] = maschera
-    #print(maschera)
     
 
 
@@ -64,16 +61,13 @@ for idTask, dizionarioTag in gruppiTask.items():
     mask = np.zeros(dim, dtype=np.uint8)
 
     print(f"Task: {idTask} | Tag presenti: {list(dizionarioTag.keys())}")
-    for tag, m in dizionarioTag.items():
-        print(f"  -> Il tag '{tag}' ha {np.sum(m == 1)} pixel attivi.")
-
+    
     if "Mais" in dizionarioTag:
         mask[dizionarioTag["Mais"] == 1] = 1   # mais = 1
         
     if "Weeds" in dizionarioTag:
         mask[dizionarioTag["Weeds"] == 1] = 2  # erbacce = 2
        
-        
 
     nomeFile = f"{idTask}.png"
     percorsoSalvataggio = os.path.join(output, nomeFile)

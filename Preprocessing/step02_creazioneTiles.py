@@ -5,11 +5,6 @@ import cv2
 import numpy as np
 import argparse
 
-#inputImg = r"C:\Users\giorg\Desktop\Tirocinio\esempiUnet\provaConMais\raw"
-#outputImg = r"C:\Users\giorg\Desktop\Tirocinio\esempiUnet\provaConMais\rawTiles"
-#inputMasks = r"C:\Users\giorg\Desktop\Tirocinio\esempiUnet\provaConMais\groundTruth"
-#outputMasks = r"C:\Users\giorg\Desktop\Tirocinio\esempiUnet\provaConMais\groundTruthTiles"
-
 
 if __name__ == "__main__":
 
@@ -31,12 +26,10 @@ if __name__ == "__main__":
     for nomeFile in sorted(os.listdir(inputDir)):
         nomeCompleto = os.path.join(inputDir, nomeFile)
         nomeNoEst = os.path.splitext(nomeFile)[0]
-        #dest = os.path.join(outputMasks, nomeNoEst)
-        #os.makedirs(dest, exist_ok=True)
 
         if args.isBN:
-            img = cv2.imread(nomeCompleto, cv2.IMREAD_UNCHANGED)  # legge uint16 correttamente
-            altezza, larghezza = img.shape  # 2D
+            img = cv2.imread(nomeCompleto, cv2.IMREAD_UNCHANGED)  
+            altezza, larghezza = img.shape 
         else:
             img = cv2.imread(nomeCompleto, cv2.IMREAD_COLOR)
             altezza, larghezza, _ = img.shape
@@ -53,14 +46,13 @@ if __name__ == "__main__":
                 if xTile + dim > larghezza:
                     xTile = larghezza - dim
 
-                #newImg = img[yTile:yTile+dim, xTile:xTile+dim]
                 if args.isBN:
                     newImg = img[yTile:yTile+dim, xTile:xTile+dim]
-                    newImg = newImg.astype(np.uint8)  # converte 0,1,2 uint16 -> uint8 senza perdita
+                    newImg = newImg.astype(np.uint8)  
                 else:
                     newImg = img[yTile:yTile+dim, xTile:xTile+dim]
                 nome = f"{nomeNoEst}_img_{i}_passo{passo}.png"
-                percorsoSalvataggio = os.path.join(outputDir, nome) #percorsoSalvataggio = os.path.join(dest, nome)
+                percorsoSalvataggio = os.path.join(outputDir, nome) 
                 cv2.imwrite(percorsoSalvataggio, newImg)
                 i += 1
                 if xTile == larghezza - dim:
