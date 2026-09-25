@@ -31,13 +31,8 @@ for prefisso, listaFile in gruppiPref.items():
     
     for percorso in listaFile[1:]:
         img = cv2.imread(percorso, 0)
-        #maschera = cv2.bitwise_or(maschera > 0, img > 0)
         maschera = (maschera > 0) | (img > 0)
-        #print(maschera.shape)
-        #masr=maschera.reshape(maschera.shape[0]*maschera.shape[1],1)
-        #print(masr.shape)
         
-        #print(np.unique(masr))
     maschere[prefisso] = maschera
 
 
@@ -64,7 +59,7 @@ for idTask, dizionarioTag in gruppiTask.items():
 
     if "Mais" in dizionarioTag:
         G = 128*dizionarioTag["Mais"].astype(dtype='uint8')
-        #print(np.unique(G))
+    
         
     if "Weeds" in dizionarioTag:
         R = 128*dizionarioTag["Weeds"].astype(dtype='uint8')
